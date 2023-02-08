@@ -1,4 +1,6 @@
 [
-  import_deps: [:phoenix],
-  inputs: ["*.{ex,exs}", "{config,lib,test}/**/*.{ex,exs}"]
+  import_deps: [:ecto, :ecto_sql, :phoenix, :ash_postgres, :ash_authentication_phoenix],
+  subdirectories: ["priv/*/migrations"],
+  inputs: ["*.{ex,exs}", "{config,lib,test}/**/*.{ex,exs}", "priv/*/seeds.exs"],
+  line_length: 80
 ]
