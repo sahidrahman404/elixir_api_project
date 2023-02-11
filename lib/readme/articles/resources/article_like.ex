@@ -7,7 +7,7 @@ defmodule Readme.Articles.ArticleLike do
   end
 
   attributes do
-    uuid_primary_key(:id)
+    integer_primary_key(:id)
     create_timestamp(:created_at)
     update_timestamp(:updated_at)
   end
@@ -18,13 +18,15 @@ defmodule Readme.Articles.ArticleLike do
   end
 
   relationships do
-    belongs_to :article, Readme.Articles.Article do
+    belongs_to :articles, Readme.Articles.Article do
       allow_nil?(false)
+      attribute_type :integer
     end
 
-    belongs_to :account, Readme.Accounts.Account do
+    belongs_to :accounts, Readme.Accounts.Account do
       api Readme.Accounts
-      allow_nil? false
+      allow_nil?(false)
+      attribute_type :integer
     end
   end
 end

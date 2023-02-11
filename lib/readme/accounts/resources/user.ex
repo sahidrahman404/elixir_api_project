@@ -2,7 +2,7 @@ defmodule Readme.Accounts.User do
   use Ash.Resource, data_layer: AshPostgres.DataLayer
 
   attributes do
-    uuid_primary_key(:id)
+    integer_primary_key(:id)
     create_timestamp(:created_at)
     update_timestamp(:updated_at)
 
@@ -13,13 +13,14 @@ defmodule Readme.Accounts.User do
   end
 
   postgres do
-    table "user"
+    table "users"
     repo Readme.Repo
   end
 
   relationships do
     belongs_to :account, Readme.Accounts.Account do
-      allow_nil? false
+      allow_nil?(false)
+      attribute_type :integer
     end
   end
 end
