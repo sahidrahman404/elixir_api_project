@@ -34,6 +34,16 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+# API
+config :readme,
+  ash_apis: [Readme.Articles, Readme.Accounts, Readme.ArticlesComments]
+
+# Ecto
+config :readme,
+  ecto_repos: [Readme.Repo]
+
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
+config :ash, :use_all_identities_in_manage_relationship?, false

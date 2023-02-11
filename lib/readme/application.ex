@@ -15,9 +15,10 @@ defmodule Readme.Application do
       # Start Finch
       {Finch, name: Readme.Finch},
       # Start the Endpoint (http/https)
-      ReadmeWeb.Endpoint
+      ReadmeWeb.Endpoint,
       # Start a worker by calling: Readme.Worker.start_link(arg)
       # {Readme.Worker, arg}
+      Readme.Repo
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
