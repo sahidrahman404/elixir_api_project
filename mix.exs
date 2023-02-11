@@ -41,12 +41,13 @@ defmodule Readme.MixProject do
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
       {:ash_postgres, "~> 1.3.10"},
-      {:ash, "~> 2.6.2"}, 
-      {:elixir_sense, github: "elixir-lsp/elixir_sense", only: [:dev, :test]}, 
+      {:ash, "~> 2.6.2"},
+      {:elixir_sense, github: "elixir-lsp/elixir_sense", only: [:dev, :test]},
       {:ash_authentication, "~> 3.9.0"},
       {:ash_authentication_phoenix, "~> 1.4.8"},
       {:ash_graphql, "~> 0.22.4"},
-      {:absinthe_plug, "~> 1.5.8"}
+      {:absinthe_plug, "~> 1.5.8"},
+      {:ecto_ltree, "~> 0.3.0"}
     ]
   end
 
