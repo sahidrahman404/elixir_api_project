@@ -1,5 +1,20 @@
 defmodule Readme.Accounts.User do
-  use Ash.Resource, data_layer: AshPostgres.DataLayer
+  use Ash.Resource,
+    data_layer: AshPostgres.DataLayer,
+    extensions: [AshGraphql.Resource]
+
+  graphql do
+    type(:user)
+
+    queries do
+      list :list_users, :read
+      get :get_user, :read
+    end
+  end
+
+  actions do
+    defaults [:create, :read, :update, :destroy]
+  end
 
   attributes do
     integer_primary_key(:id)
@@ -20,7 +35,7 @@ defmodule Readme.Accounts.User do
   relationships do
     belongs_to :account, Readme.Accounts.Account do
       allow_nil?(false)
-      attribute_type :integer
+      attribute_type(:integer)
     end
   end
 end

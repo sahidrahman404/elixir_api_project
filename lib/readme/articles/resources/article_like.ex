@@ -1,6 +1,7 @@
 defmodule Readme.Articles.ArticleLike do
   use Ash.Resource,
-    data_layer: AshPostgres.DataLayer
+    data_layer: AshPostgres.DataLayer,
+    extensions: [AshGraphql.Resource]
 
   actions do
     defaults([:read, :create, :update, :destroy])

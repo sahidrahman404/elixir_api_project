@@ -1,5 +1,12 @@
 defmodule Readme.Accounts do
-  use Ash.Api
+  use Ash.Api,
+    extensions: [
+      AshGraphql.Api
+    ]
+
+  graphql do
+    authorize? false
+  end
 
   resources do
     registry(Readme.Accounts.Registry)

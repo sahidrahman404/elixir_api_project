@@ -1,7 +1,29 @@
 defmodule Readme.Accounts.Account do
   use Ash.Resource,
     data_layer: AshPostgres.DataLayer,
-    extensions: [AshAuthentication]
+    extensions: [AshAuthentication, AshGraphql.Resource]
+
+  graphql do
+    type(:account)
+
+    queries do
+      get :account, :read 
+      get :sign_in_with_password, :sign_in_with_password do
+        # tell it not to use anything for looking up
+        type_name(:account_with_token)
+        identity(false)
+        as_mutation?(true)
+      end
+    end
+
+    mutations do
+      create :register_with_password, :register_with_password
+    end
+  end
+
+  actions do
+    defaults([:read])
+  end
 
   attributes do
     integer_primary_key(:id)
@@ -23,7 +45,7 @@ defmodule Readme.Accounts.Account do
       token_resource Readme.Accounts.Token
 
       signing_secret fn _, _ ->
-        Application.fetch_env(:my_app, :token_signing_secret)
+        Application.fetch_env(:readme, :token_signing_secret)
       end
     end
   end

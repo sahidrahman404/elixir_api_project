@@ -1,14 +1,42 @@
 defmodule Readme.ArticlesComments.Comment do
   use Ash.Resource,
-    data_layer: AshPostgres.DataLayer
+    data_layer: AshPostgres.DataLayer,
+    extensions: [AshGraphql.Resource]
+
+  graphql do
+    type(:article_comment)
+
+    queries do
+      list(:list_comment, :read)
+    end
+
+    mutations do
+      create :create_comment, :create_comment
+      destroy(:delete_comment, :destroy)
+    end
+  end
 
   actions do
     defaults([:create, :read, :update, :destroy])
+
+    create :create_comment do
+      accept([:content, :parent_path])
+
+      argument(:accounts_id, :integer)
+
+      change(
+        manage_relationship(:accounts_id, :accounts, type: :append_and_remove)
+      )
+    end
   end
 
   attributes do
     integer_primary_key(:id)
-    create_timestamp(:created_at)
+
+    create_timestamp :created_at do
+       private? false
+    end
+
     update_timestamp(:updated_at)
 
     attribute :content, :string do
@@ -20,7 +48,7 @@ defmodule Readme.ArticlesComments.Comment do
       generated?(true)
     end
 
-    attribute(:parent_path, :string)
+    attribute(:parent_path, :string, allow_nil?: true)
   end
 
   postgres do
@@ -96,6 +124,10 @@ defmodule Readme.ArticlesComments.Comment do
     belongs_to :accounts, Readme.Accounts.Account do
       api Readme.Accounts
       attribute_type(:integer)
+    end
+
+    has_many :articles_comments_likes, Readme.ArticlesComments.CommentLike do
+      destination_attribute(:articles_comments_id)
     end
   end
 end

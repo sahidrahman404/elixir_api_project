@@ -1,5 +1,7 @@
 defmodule Readme.Articles.Article do
-  use Ash.Resource, data_layer: AshPostgres.DataLayer
+  use Ash.Resource,
+    data_layer: AshPostgres.DataLayer,
+    extensions: [AshGraphql.Resource]
 
   actions do
     defaults([:create, :read, :update, :destroy])
