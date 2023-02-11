@@ -44,7 +44,9 @@ defmodule Readme.MixProject do
       {:ash, "~> 2.6.2"}, 
       {:elixir_sense, github: "elixir-lsp/elixir_sense", only: [:dev, :test]}, 
       {:ash_authentication, "~> 3.9.0"},
-      {:ash_authentication_phoenix, "~> 1.4.8"}
+      {:ash_authentication_phoenix, "~> 1.4.8"},
+      {:ash_graphql, "~> 0.22.4"},
+      {:absinthe_plug, "~> 1.5.8"}
     ]
   end
 
