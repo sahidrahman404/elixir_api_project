@@ -1,0 +1,114 @@
+{
+  "attributes": [
+    {
+      "allow_nil?": false,
+      "default": "nil",
+      "generated?": true,
+      "primary_key?": true,
+      "references": null,
+      "size": null,
+      "source": "id",
+      "type": "bigint"
+    },
+    {
+      "allow_nil?": false,
+      "default": "fragment(\"now()\")",
+      "generated?": false,
+      "primary_key?": false,
+      "references": null,
+      "size": null,
+      "source": "created_at",
+      "type": "utc_datetime_usec"
+    },
+    {
+      "allow_nil?": false,
+      "default": "fragment(\"now()\")",
+      "generated?": false,
+      "primary_key?": false,
+      "references": null,
+      "size": null,
+      "source": "updated_at",
+      "type": "utc_datetime_usec"
+    },
+    {
+      "allow_nil?": false,
+      "default": "nil",
+      "generated?": false,
+      "primary_key?": false,
+      "references": null,
+      "size": null,
+      "source": "content",
+      "type": "text"
+    },
+    {
+      "allow_nil?": true,
+      "default": "nil",
+      "generated?": false,
+      "primary_key?": false,
+      "references": {
+        "destination_attribute": "id",
+        "destination_attribute_default": null,
+        "destination_attribute_generated": null,
+        "multitenancy": {
+          "attribute": null,
+          "global": null,
+          "strategy": null
+        },
+        "name": "articles_comments_accounts_id_fkey",
+        "on_delete": null,
+        "on_update": null,
+        "schema": "public",
+        "table": "accounts"
+      },
+      "size": null,
+      "source": "accounts_id",
+      "type": "bigint"
+    }
+  ],
+  "base_filter": null,
+  "check_constraints": [],
+  "custom_indexes": [],
+  "custom_statements": [
+    {
+      "code?": false,
+      "down": "  alter table articles_comments\n  drop column path, \n  drop column parent_path;\n",
+      "name": "add_path_and_parent_path_column",
+      "up": "  alter table articles_comments\n  add column parent_path ltree, \n  add column path ltree generated always as (coalesce(parent_path::text,'')::ltree || id::text::ltree) stored unique;\n"
+    },
+    {
+      "code?": false,
+      "down": "alter table articles_comments\ndrop constraint fk_parent;\n",
+      "name": "add_constraint_parent_path",
+      "up": "alter table articles_comments\nadd constraint fk_parent\nforeign key(parent_path)\nreferences articles_comments(path)\non delete cascade\non update cascade;\n"
+    },
+    {
+      "code?": false,
+      "down": "drop index articles_comments_account_id_idx;\n",
+      "name": "add_index_accounts_id",
+      "up": "create index articles_comments_account_id_idx on articles_comments(accounts_id);\n"
+    },
+    {
+      "code?": false,
+      "down": "drop index articles_comments_parent_path_idx;\n",
+      "name": "add_index_parent_path",
+      "up": "create index articles_comments_parent_path_idx on articles_comments(parent_path asc nulls first);\n"
+    },
+    {
+      "code?": false,
+      "down": "drop index articles_comments_path_idx;\n",
+      "name": "add_index_path",
+      "up": "create index articles_comments_path_idx on articles_comments using gist (path);;\n"
+    }
+  ],
+  "has_create_action": true,
+  "hash": "3462513F8BC3C63D1831C0BDA836619A20C56FAD2F367A4A060D284F00C76497",
+  "identities": [],
+  "multitenancy": {
+    "attribute": null,
+    "global": null,
+    "strategy": null
+  },
+  "repo": "Elixir.Readme.Repo",
+  "schema": null,
+  "table": "articles_comments"
+}
