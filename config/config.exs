@@ -47,3 +47,5 @@ config :readme,
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
 config :ash, :use_all_identities_in_manage_relationship?, false
+config :readme, :token_signing_secret, System.fetch_env!("README_API_ASH")
+config :ash, :utc_datetime_type, :datetime
