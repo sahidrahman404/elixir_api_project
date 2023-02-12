@@ -7,7 +7,8 @@ defmodule Readme.Accounts.Account do
     type(:account)
 
     queries do
-      get :account, :read 
+      get(:account, :read)
+
       get :sign_in_with_password, :sign_in_with_password do
         # tell it not to use anything for looking up
         type_name(:account_with_token)
@@ -43,11 +44,19 @@ defmodule Readme.Accounts.Account do
     tokens do
       enabled? true
       token_resource Readme.Accounts.Token
+      store_all_tokens? true
+      require_token_presence_for_authentication? true
 
       signing_secret fn _, _ ->
         Application.fetch_env(:readme, :token_signing_secret)
       end
     end
+  end
+
+  changes do
+    change(Readme.Accounts.User.Changes.RemoveAllTokens,
+      where: [action_is(:password_reset_with_password)]
+    )
   end
 
   postgres do
